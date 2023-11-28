@@ -1,0 +1,81 @@
+﻿@{
+	ViewData["Title"] = "Edit Classe";
+}
+
+@model AttendanceJournalLibrary.Class
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Редактирование пары</h2>
+		<div id="title-inline"></div>
+		@Html.HiddenFor(model => model.ClassID)
+
+		<form id="editClasseForm" enctype="multipart/form-data">
+			<label asp-for="Theme"></label>
+			<p>
+				<input type="text" asp-for="Theme" maxlength="20" placeholder="Название" />
+				<span asp-validation-for="Theme" class="position-box-error" id="name-error"></span>
+			</p>
+
+
+			@Html.LabelFor(model => model.SubjectID);
+			<p>@Html.DropDownListFor(model => model.SubjectID, ViewBag.Subjects as SelectList)</p>
+			<p><button type="submit">Сохранить</button></p>
+		</form>
+		<form asp-action="Main" asp-controller="Classes">
+			<p><button>Главная</button></p>
+		</form>
+		@ViewData["Message"]
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('#editClasseForm').submit(function (e) {
+				e.preventDefault();
+
+				if ($(this).valid()) {
+					var form = $(this);
+
+					var classaId = $('#ClassID').val();
+					var name = $('#Name').val();
+					var SubjectId = $('#SubjectId').val();
+					var save = $('#save').is(':checked');
+
+					var formData = new FormData();
+					formData.append('ClassID', classaId);
+					formData.append('Name', name);
+					formData.append('SubjectId', SubjectId);
+
+					$.ajax({
+						url: '/Classes/EditClasse/' + classaId + '?save=' + save,
+						type: 'PUT',
+						data: formData,
+						contentType: false,
+						processData: false,
+						success: function (response) {
+							if (response.nameError) {
+								$('#name-error').text(response.nameError);
+								$('#Name')[0].setCustomValidity(response.nameError);
+								$('#Name').removeClass('valid');
+								$('#Name').addClass('input-validation-error');
+							} else if (response.success) {
+								console.log('Пара успешно обновлена');
+								window.location.href = '/Classes/All';
+							} else {
+								console.log('Ошибка при обновлении пары');
+							}
+						},
+						error: function (xhr, status, error) {
+							console.log('Ошибка при выполнении запроса');
+						}
+					});
+				}
+			});
+		});
+	</script>
+}

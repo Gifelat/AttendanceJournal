@@ -1,0 +1,71 @@
+﻿@{
+	ViewData["Title"] = "Edit Subject";
+}
+
+@model AttendanceJournalLibrary.Subject
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Редактирование предмета</h2>
+		<div id="title-inline"></div>
+		@Html.HiddenFor(model => model.SubjectID)
+		<form id="editSubjectForm"> 
+	        <label asp-for="SubjectName"></label>
+			 <p>
+				<input type="text" asp-for="SubjectName" maxlength="20" placeholder="Название предмета" value="@Model.SubjectName" />
+				<span asp-validation-for="SubjectName" class="position-box-error" id="typname-error"></span>
+			 </p>
+			 <p><button type="submit">Сохранить</button></p>
+			</form>
+		<form asp-action="Main" asp-controller="Subjects">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		@ViewData["Message"]
+	</div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#editSubjectForm').submit(function (e) {
+                e.preventDefault();
+
+                if ($(this).valid()) {
+                    var SubjectId = $('#SubjectId').val();
+					var subjectName = $('#SubjectName').val();
+
+                    var Subject = {
+                        SubjectId: SubjectId,
+                        SubjectName: subjectName,
+                    };
+
+                    $.ajax({
+						url: '/Subjects/EditSubject/' + SubjectId,
+                        type: 'PUT',
+						data: JSON.stringify(Subject),
+                        contentType: 'application/json',
+                        success: function (response) {
+							if (response.subjectNameError) {
+								$('#typname-error').text(response.subjectNameError);
+								$('#SubjectName')[0].setCustomValidity(response.subjectNameError);
+								$('#SubjectName').removeClass('valid');
+								$('#SubjectName').addClass('input-validation-error');
+							} else if (response.success) {
+								console.log('Предмет успешно обновлен');
+								window.location.href = '/Subjects/All';
+							} else {
+								console.log('Ошибка при обновлении');
+							}
+						},
+                        error: function (xhr, status, error) {
+                            console.log('Ошибка при выполнении запроса');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

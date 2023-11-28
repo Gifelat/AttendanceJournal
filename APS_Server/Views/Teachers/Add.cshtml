@@ -1,0 +1,89 @@
+﻿@{
+	ViewData["Title"] = "Add Teacher";
+}
+
+@model AttendanceJournalLibrary.Teacher
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<style>
+	.field-validation-error {
+		color: #b94a48;
+	}
+
+	input.input-validation-error {
+		border: 1px solid #b94a48;
+	}
+
+	input.valid {
+		border: 1px solid #16a085;
+	}
+
+	.validation-summary-errors {
+		color: #b94a48;
+	}
+
+	.validation-summary-ok {
+		color: #32CD32;
+	}
+</style>
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Добавление пользователя</h2>
+		<div id="title-inline"></div>
+
+		<form method="post" asp-action="AddTeacher" asp-controller="Teachers">
+			<label asp-for="FirstName"></label>
+			<p>
+				<input type="text" asp-for="FirstName" maxlength="20" placeholder="Имя" />
+				<span asp-validation-for="FirstName" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="LastName"></label>
+			<p>
+				<input type="text" asp-for="LastName" maxlength="20" placeholder="Фамилия" />
+				<span asp-validation-for="LastName" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="MiddleName"></label>
+			<p>
+				<input type="text" asp-for="MiddleName" maxlength="20" placeholder="Отчество" />
+				<span asp-validation-for="MiddleName" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="Position"></label>
+			<p>
+				<input type="text" asp-for="Position" maxlength="20" placeholder="Должность" />
+				<span asp-validation-for="Position" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="Email"></label>
+			<p>
+				<input type="text" asp-for="Email" maxlength="20" placeholder="Почта" />
+				<span asp-validation-for="Email" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="Login"></label>
+			<p>
+				<input type="text" asp-for="Login" maxlength="20" placeholder="Логин" />
+				<span asp-validation-for="Login" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="Password"></label>
+			<p>
+				<input type="password" asp-for="Password" maxlength="20"  placeholder="Пароль" />
+				<span asp-validation-for="Password" class="position-box-error"></span>
+			</p>
+
+			@Html.LabelFor(model => model.RoleID, "Выберите роль:")
+			<p>@Html.DropDownListFor(model => model.RoleID, ViewBag.Roles as SelectList)</p>
+			<p><button type="submit">Добавить</button></p>
+		</form>
+
+		<form asp-action="Main" asp-controller="Teachers">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		<p class="validation-summary-errors">@ViewData["Message"]</p>
+	</div>
+</div>

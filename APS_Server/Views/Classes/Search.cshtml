@@ -1,0 +1,32 @@
+﻿@{
+	ViewData["Title"] = "Search";
+}
+
+@model ASP_Server.Models.ClassSearchModel
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Расширенный поиск пары</h2>
+		<div id="title-inline"></div>
+		<p>Будут выведены все записи с найдеными сходствами.</p>
+		@using (Html.BeginForm("Result", "Classes", FormMethod.Get))
+		{
+			<form>
+				Укажите номер записи:
+				<p>@Html.TextBox("id", @Model.ClassID, new { type="number", min="1", placeholder="Номер"})</p>
+				Введите название:
+				<p>@Html.TextBox("theme", @Model.Theme, new { placeholder="Название темы"})</p>
+				Введите:
+				<p>@Html.TextBox("faculty", @Model.Faculty, new { type="number", min="1", placeholder="Номер"})</p>
+				Введите тип:
+				<p>@Html.TextBox("subject", @Model.Subject, new { placeholder="Предмет"})</p>
+				<p><button>Найти</button></p>
+			</form>
+		}
+		<form asp-action="Main" asp-controller="Classes">
+			<p><button>Главная</button></p>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>

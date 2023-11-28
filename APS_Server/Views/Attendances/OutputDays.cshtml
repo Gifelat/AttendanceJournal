@@ -1,0 +1,54 @@
+﻿@{
+	ViewData["Title"] = "Attendances";
+}
+
+@model IEnumerable<ASP_Server.Models.DayModel>
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>История посещения</h2>
+		<div id="title-inline"></div>
+		@if (Model.Count() > 0)
+		{
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayName("День")
+						</th>
+						<th>
+							@Html.DisplayName("Найти записи")
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Date)
+							</td>
+@* 							<td>
+								@Html.DisplayFor(modelItem => item.Class)
+							</td> *@
+							<td>
+								<form method="GET" asp-action="ResultDay" asp-controller="Attendances">
+									<p><button type="submit" class="button-input-small" name="date" value="@item.Date">Перейти</button></p>
+								</form>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p>Записи не найдены...</p>
+		}
+
+		<form asp-action="Main" asp-controller="Attendances">
+			<p><button class="button-revers">Ок</button></p>
+		</form>
+	</div>
+</div>

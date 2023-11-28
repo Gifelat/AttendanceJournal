@@ -1,0 +1,46 @@
+﻿@{
+	Layout = "~/Views/Shared/_AuthenticationLayout.cshtml";
+	ViewData["Title"] = "SignIn";
+}
+
+@model AttendanceJournalLibrary.Teacher
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<div class="background-box form-center">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Войти</h2>
+		<div id="title-inline"></div>
+		<div>
+			@using (Html.BeginForm("SignIn", "Account", FormMethod.Post))
+			{
+			<form class="form-main">
+					<label asp-for="Login"></label>
+					<p>
+						<input type="text" asp-for="Login" maxlength="20" placeholder="Логин" />
+						<span asp-validation-for="Login" class="position-box-error"></span>
+					</p>
+
+					<label asp-for="Password"></label>
+					<p>
+						<input type="password" asp-for="Password" maxlength="20" placeholder="Пароль" />
+						<span asp-validation-for="Password" class="position-box-error"></span>
+					</p>
+					<p><button>Войти</button></p>
+			</form>
+			}
+		</div>
+		<p class="validation-summary-errors">@ViewData["Message"]</p>
+		<div id="title-inline-small"></div>
+		<div>
+			<div>
+				<p>
+					<form method="get" asp-controller="Account" asp-action="SignUp">
+						<p><button class="button-revers">Регистрация</button></p>
+					</form>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

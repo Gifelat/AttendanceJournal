@@ -1,0 +1,28 @@
+﻿@{
+	ViewData["Title"] = "Search";
+}
+
+@model ASP_Server.Models.SubjectsearchModel
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Расширенный поиск предмета</h2>
+		<div id="title-inline"></div>
+		<p>Будут выведены все записи с найдеными сходствами.</p>
+		@using (Html.BeginForm("Result", "Subjects", FormMethod.Get))
+		{
+			<form>
+				Укажите номер записи:
+				<p>@Html.TextBox("id", @Model.SubjectID, new { type="number", min="1", placeholder="Номер"})</p>
+				Введите предмет:
+				<p>@Html.TextBox("subjectname", @Model.SubjectName, new { placeholder="Предмет"})</p>
+				<p><button>Найти</button></p>
+			</form>
+		}
+		<form asp-action="Main" asp-controller="Subjects">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>

@@ -1,0 +1,28 @@
+﻿@{
+	ViewData["Title"] = "Add Student";
+}
+
+@model AttendanceJournalLibrary.Student
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Добавление студента</h2>
+		<div id="title-inline"></div>
+
+		<form form method="post" asp-action="AddStudent" asp-controller="Faculties">
+			<label asp-for="FirstName"></label>
+			<p>
+				<input type="text" asp-for="FirstName" maxlength="20" placeholder="Факультет" />
+				<span asp-validation-for="FirstName" class="position-box-error"></span>
+			</p>
+			<p><button type="submit">Добавить</button></p>
+		</form>
+
+		<form asp-action="Main" asp-controller="Faculties">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>

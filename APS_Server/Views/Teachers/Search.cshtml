@@ -1,0 +1,42 @@
+﻿@{
+	ViewData["Title"] = "Search";
+}
+
+@model ASP_Server.Models.TeacherSearchModel
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Расширенный поиск пользователя</h2>
+		<div id="title-inline"></div>
+		<p>Будут выведены все записи с найдеными сходствами (даже связи с другими записями).</p>
+		@using (Html.BeginForm("Result", "Teachers", FormMethod.Get))
+		{
+			<form>
+				Укажите номер записи:
+				<p>@Html.TextBox("id", @Model.TeacherID, new { type="number", min="1", placeholder="Номер"})</p>
+				Введите имя:
+				<p>@Html.TextBox("name", @Model.FirstName, new { placeholder="Имя"})</p>
+				Введите фамилию:
+				<p>@Html.TextBox("surname", @Model.LastName, new { placeholder="Фамилия"})</p>
+				Введите отчество:
+				<p>@Html.TextBox("middlename", @Model.MiddleName, new { placeholder = "Отчество" })</p>
+				Введите должность:
+				<p>@Html.TextBox("position", @Model.Position, new { placeholder = "Должность" })</p>
+				Введите email:
+				<p>@Html.TextBox("email", @Model.Email, new { placeholder="Почта"})</p>
+				Введите логин:
+				<p>@Html.TextBox("login", @Model.Login, new { placeholder="Логин"})</p>
+				Введите пароль:
+				<p>@Html.TextBox("password", @Model.Password, new { placeholder="Пароль"})</p>
+				Введите роль:
+				<p>@Html.TextBox("role", Model.Role, new { placeholder="Роль"})</p>
+				<p><button>Найти</button></p>
+			</form>
+		}
+		<form asp-action="Main" asp-controller="Teachers">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>

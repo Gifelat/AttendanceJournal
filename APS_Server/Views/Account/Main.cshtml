@@ -1,0 +1,65 @@
+﻿@{
+	ViewData["Title"] = "Account";
+}
+
+@model AttendanceJournalLibrary.Teacher
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>
+			Аккаунт @if (User.Identity.IsAuthenticated && Model.RoleID == 1)
+			{
+				<label>(Admin)</label>
+			}
+			</h2>
+			<div id="title-inline"></div>
+		<div>
+			@if (User.Identity.IsAuthenticated)
+			{
+				<p>Добро пожаловать на сайт. @Model.FirstName @Model.LastName!</p>
+				<div class="account-info">
+					<p>Имя: @Model.FirstName</p>
+					<p>Фамилия: @Model.LastName</p>
+					<p>Почта: @Model.Email</p>
+					<p>
+						<div class="button-group">
+							<form asp-controller="Account" asp-action="Edit" class="form-button">
+								<button value="@Model.TeacherID" name="id">Редактировать</button>
+							</form>
+							<form asp-controller="Account" asp-action="EditPassword" class="form-button">
+								<button value ="@Model.TeacherID" name="id">Сменить пароль</button>
+							</form>
+						</div>
+					</p>
+					<div id="title-inline-small"></div>
+					@if(Model.RoleID == 1)
+					{
+							<form asp-controller="Teachers" asp-action="Main">
+								<button>Пользователи</button>
+							</form>
+					}
+
+				</div>
+				<form asp-controller="Account" asp-action="Exit">
+					<button class="button-revers">Выйти</button>
+				</form>
+			}
+			else
+			{
+				<p>Signin or signup.</p>
+				<p>
+					<form method="get" asp-controller="Account" asp-action="SignIn">
+						<button>Войти</button>
+					</form>
+				</p>
+				<p>
+					<form method ="get" asp-controller="Account" asp-action="SignUp">
+						<button>Регистрация</button>
+					</form>
+				</p>
+			}
+		</div>
+	</div>
+</div>
+

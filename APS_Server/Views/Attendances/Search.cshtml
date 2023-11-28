@@ -1,0 +1,50 @@
+﻿@{
+	ViewData["Title"] = "Search";
+}
+
+@model ASP_Server.Models.AttendanceSearchModel
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Расширенный поиск записи</h2>
+		<div id="title-inline"></div>
+		<p>Будут выведены все записи с найдеными сходствами (даже связи с другими записями).</p>
+		@using (Html.BeginForm("Result", "Attendances", FormMethod.Get))
+		{
+			<form>
+				Укажите номер записи:
+				<p>@Html.TextBox("id", @Model.AttendanceID, new { type="number", min="1", placeholder="Номер"})</p>
+				Введите название:
+				<p>@Html.TextBox("classaname", @Model.Class, new {placeholder="Название"})</p>
+				Введите дату:
+				<p>@Html.TextBox("date", @Model.IsPresent, new {placeholder="Дата"})</p>
+				Введите:
+				<p>@Html.TextBox("attendancetype", @Model.Student, new {placeholder="Тип"})</p>
+				@if (User.Identity.Name != null && User.FindFirst(x => x.Type == System.Security.Claims.ClaimsIdentity.DefaultRoleClaimType).Value == "Admin")
+				{
+					<p>В режиме админа Вы имеете право изменять записи пользователей.</p>
+					<p>@Html.TextBox("teacher", @Model.Teacher, new {placeholder="Пользователь"})</p>
+				}
+				<p>
+					<div class="button-group box-center">
+						<form asp-controller="Attendances" asp-action="All">
+							<button class="form-button">Найти</button>
+						</form>
+						@if (User.Identity.Name != null && User.FindFirst(x => x.Type == System.Security.Claims.ClaimsIdentity.DefaultRoleClaimType).Value == "Admin")
+						{
+							<form asp-controller="Attendances" asp-action="AllDB">
+								<button class="form-button">Искать в БД</button>
+							</form>
+						}
+					</div>
+				</p>
+			</form>
+		}
+
+		<form asp-action="Main" asp-controller="Attendances">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>

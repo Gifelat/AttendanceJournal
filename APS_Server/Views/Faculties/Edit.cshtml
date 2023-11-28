@@ -1,0 +1,71 @@
+﻿@{
+	ViewData["Title"] = "Edit Faculty";
+}
+
+@model AttendanceJournalLibrary.Faculty
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Редактирование факультетов</h2>
+		<div id="title-inline"></div>
+		@Html.HiddenFor(model => model.FacultyID)
+		<form id="editFacultyForm">
+			<label asp-for="FacultyName"></label>
+			<p>
+				<input type="text" asp-for="FacultyName" maxlength="20" placeholder="Факультеты" value="@Model.FacultyName" />
+				<span asp-validation-for="FacultyName" class="position-box-error" id="typname-error"></span>
+			</p>
+			<p><button>Сохранить</button></p>
+		</form>
+		<form asp-action="Main" asp-controller="Faculties">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		@ViewData["Message"]
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('#editFacultyForm').submit(function (e) {
+				e.preventDefault();
+
+				if ($(this).valid()) {
+					var facultyId = $('#FacultyID').val();
+					var facultyName = $('#FacultyName').val();
+
+					var faculty = {
+						FacultyId: facultyId,
+						FacultyName: facultyName,
+					};
+
+					$.ajax({
+						url: '/Faculties/EditFaculty/' + facultyId,
+						type: 'PUT',
+						data: JSON.stringify(faculty),
+						contentType: 'application/json',
+						success: function (response) {
+							if (response.facultyNameError) {
+								$('#typname-error').text(response.facultyNameError);
+								$('#FacultyName')[0].setCustomValidity(response.facultyNameError);
+								$('#FacultyName').removeClass('valid');
+								$('#FacultyName').addClass('input-validation-error');
+							}
+							else if (response.success) {
+								console.log('Факультет успешно обновлен');
+								window.location.href = '/Faculties/All';
+							} else {
+								console.log('Ошибка при обновлении');
+							}
+						},
+						error: function (xhr, status, error) {
+							console.log('Ошибка при выполнении запроса');
+						}
+					});
+				}
+			});
+		});
+	</script>
+}

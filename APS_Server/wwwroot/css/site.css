@@ -1,0 +1,34 @@
+* {
+    padding: 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 20px;
+    position: relative;
+}
+
+.navbar-brand {
+    font-size: 24px;
+}
+
+@media (min-width: 768px) {
+    html {
+    font-size: 20px;
+  }
+}
+
+button {
+    background-color: #327da8;
+    border: solid #327da8;
+    color: white;
+    width: 150px;
+    height: 45px;
+    margin: 20px, 20px, 0, 0;
+    font-size: 10px;
+    padding-top: 2px;
+    transition: 0.3s;
+}
+

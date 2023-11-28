@@ -1,0 +1,35 @@
+﻿@{
+	ViewData["Title"] = "Students";
+}
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Факультеты</h2>
+		<div id="title-inline"></div>
+
+		<div>
+			<p>
+				<form asp-controller="Students" asp-action="All">
+					<button>Факультеты</button>
+				</form>
+			</p>
+
+			<p>
+				<form asp-controller="Students" asp-action="Add">
+					<button>Добавить тип</button>
+				</form>
+			</p>
+		</div>
+
+		<div>
+			<p>Поиск по номеру записи:</p>
+			<form asp-controller="Students" asp-action="Result" method="GET">
+				@Html.TextBox("id", "1", new { type="number", required = "required", min="1", placeholder="1"})
+				<button>Найти</button>
+			</form>
+			<a asp-controller="Students" asp-action="Search">Расширеный поиск</a>
+		</div>
+	</div>
+</div>
+

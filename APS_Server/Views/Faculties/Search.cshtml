@@ -1,0 +1,28 @@
+﻿@{
+	ViewData["Title"] = "Search";
+}
+
+@model ASP_Server.Models.FacultySearchModel
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Расширенный поиск типа приема пищи</h2>
+		<div id="title-inline"></div>
+		<p>Будут выведены все записи с найдеными сходствами (даже связи с другими записями).</p>
+		@using (Html.BeginForm("Result", "Faculties", FormMethod.Get))
+		{
+			<form>
+				Укажите номер записи:
+				<p>@Html.TextBox("id", @Model.FacultyID, new { type="number", min="1", placeholder="Номер"})</p>
+				Введите тип приема пищи:
+				<p>@Html.TextBox("typename", @Model.FacultyName, new { placeholder="Тип приема пищи"})</p>
+				<p><button>Найти</button></p>
+			</form>
+		}
+		<form asp-action="Main" asp-controller="Faculties">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>

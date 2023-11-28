@@ -1,0 +1,29 @@
+﻿@{
+	ViewData["Title"] = "Add Subject";
+}
+
+@model AttendanceJournalLibrary.Subject
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Добавление предмета</h2>
+		<div id="title-inline"></div>
+
+		<form form method="post" asp-action="AddSubject" asp-controller="Subjects">
+			<label asp-for="SubjectName"></label>
+			<p>
+				<input type="text" asp-for="SubjectName" maxlength="20" placeholder="Тип" />
+				<span asp-validation-for="SubjectName" class="position-box-error"></span>
+			</p>
+			<p><button type="submit">Добавить</button></p>
+		</form>
+
+		<form asp-action="Main" asp-controller="Subjects">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>

@@ -1,0 +1,50 @@
+﻿@using AttendanceJournalLibrary
+@{
+	ViewData["Title"] = "Attendances";
+}
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Расписание</h2>
+		<div id="title-inline"></div>
+
+		<div>
+			<p>
+				<div class="button-group box-center">
+					<form asp-controller="Attendances" asp-action="All" class="form-button">
+						@Html.CheckBox("full", false, new { id="check-box"})
+						<button type="submit">История расписания</button>
+					</form>
+					@if (User.Identity.Name != null && User.FindFirst(x => x.Type == System.Security.Claims.ClaimsIdentity.DefaultRoleClaimType).Value == "Admin")
+					{
+						<form asp-controller="Attendances" asp-action="All" class="form-button">
+							@Html.CheckBox("full", true, new { id="check-box"})
+							<button type="submit">Все записи из БД</button>
+						</form>
+					}
+				</div>
+			</p>
+
+			<p>
+				<form asp-controller="Attendances" asp-action="Add">
+					<button type="submit">Добавить запись</button>
+				</form>
+			</p>
+		</div>
+
+
+		<div>
+			<p>Поиск по номеру записи:</p>
+			<form asp-controller="Attendances" asp-action="Result" method="GET">
+				@Html.TextBox("id", "1", new { type="number", required = "required", min="1", placeholder="1"})
+				<button type="submit">Найти</button>
+			</form>
+			<a asp-controller="Attendances" asp-action="Search">Расширеный поиск</a>
+		</div>
+		<form asp-controller="Attendances" asp-action="Statistic">
+			<button type="submit">Статистика</button>
+		</form>
+	</div>
+</div>
+

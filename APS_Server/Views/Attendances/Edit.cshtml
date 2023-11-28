@@ -1,0 +1,99 @@
+﻿@{
+	ViewData["Title"] = "Edit Attendances";
+}
+
+@model AttendanceJournalLibrary.Attendance
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Редактирование отметки о посещении</h2>
+		<div id="title-inline"></div>
+		@Html.HiddenFor(model => model.AttendanceID)
+		<form id="editAttendanceForm">
+			@Html.LabelFor(model => model.ClassID);
+			<p>@Html.DropDownListFor(model => model.ClassID, ViewBag.Classes as SelectList)</p>
+
+			<label asp-for="IsPresent"></label>
+			<p>
+				<input type="number" asp-for="IsPresent" maxlength="20" placeholder="1" min="1" />
+				<span asp-validation-for="IsPresent" class="position-box-error"></span>
+			</p>
+
+			@Html.LabelFor(model => model.StudentID)
+			<p>@Html.DropDownListFor(model => model.StudentID, ViewBag.Faculties as SelectList)</p>
+
+			@if (User.Identity.Name != null && User.FindFirst(x => x.Type == System.Security.Claims.ClaimsIdentity.DefaultRoleClaimType).Value == "Admin")
+			{
+				<p>В режиме админа Вы имеете право изменять записи пользователей.</p>
+				@Html.LabelFor(model => model.TeacherID)
+				<p>@Html.DropDownListFor(model => model.TeacherID, ViewBag.Teachers as SelectList)</p>
+			}
+			<p><button type="submit">Сохранить</button></p>
+		</form>
+
+		<form asp-action="Main" asp-controller="Attendances">
+			<p><button class="button-revers">Главная</button></p>
+		</form>
+		@ViewData["Message"]
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$('#editAttendanceForm').submit(function (e) {
+				e.preventDefault();
+
+				if ($(this).valid()) {
+					var attendanceId = $('#AttendanceID').val();
+					var classId = $('#ClassID').val();
+					var ispresent = $('#IsPresent').val();
+					var studentId = $('#StudentId').val();
+					var teacherId = $('#TeacherId').val()
+
+					var attendance = {
+						AttendanceID: attendanceId,
+						ClassID: classaId,
+						Weight: ispresent,
+						Date: date,
+						Time: time,
+						StudentId: studentId,
+						TeacherID: teacherID
+					};
+
+					$.ajax({
+						url: '/Attendances/EditAttendance/' + attendanceId,
+						type: 'PUT',
+						data: JSON.stringify(attendance),
+						contentType: 'application/json',
+						success: function (response) {
+							if (response.dateError) {
+								$('#date-error').text(response.dateError);
+								$('#Date')[0].setCustomValidity(response.dateError);
+								$('#Date').removeClass('valid');
+								$('#Date').addClass('input-validation-error');
+							}
+							else if (response.timeError) {
+								$('#time-error').text(response.timeError);
+								$('#Time')[0].setCustomValidity(response.timeError);
+								$('#Time').removeClass('valid');
+								$('#Time').addClass('input-validation-error');
+							}
+							else if (response.success) {
+								console.log('Успешно обновлено');
+								window.location.href = '/Attendances/All';
+							} else {
+								console.log('Ошибка при обновлении журнала');
+							}
+						},
+						error: function (xhr, status, error) {
+							console.log('Ошибка при выполнении запроса');
+						}
+					});
+				}
+			});
+		});
+	</script>
+}

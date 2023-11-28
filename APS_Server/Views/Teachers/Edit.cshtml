@@ -1,0 +1,139 @@
+﻿@{
+	ViewData["Title"] = "Edit Teacher";
+}
+
+@model AttendanceJournalLibrary.Teacher
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<style>
+	.field-validation-error {
+		color: #b94a48;
+	}
+
+	input.input-validation-error {
+		border: 1px solid #b94a48;
+	}
+
+	input.valid {
+		border: 1px solid #16a085;
+	}
+
+	.validation-summary-errors, #login-error, #email-error {
+		color: #b94a48;
+	}
+
+	.validation-summary-ok {
+		color: #32CD32;
+	}
+</style>
+
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Редактирование пользователя</h2>
+		<div id="title-inline"></div>
+		@Html.HiddenFor(model => model.TeacherID)
+		<form id="editTeacherForm">
+			<label asp-for="FirstName"></label>
+			<p>
+				<input type="text" asp-for="FirstName" maxlength="20" placeholder="Имя" value="@Model.FirstName" />
+				<span asp-validation-for="FirstName" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="LastName"></label>
+			<p>
+				<input type="text" asp-for="LastName" maxlength="20" placeholder="Фамилия" value="@Model.LastName" />
+				<span asp-validation-for="LastName" class="position-box-error"></span>
+			</p>
+
+			<label asp-for="Email"></label>
+			<p>
+				<input type="text" asp-for="Email" maxlength="20" placeholder="Почта" />
+				<span asp-validation-for="Email" class="position-box-error" id="email-error"></span>
+			</p>
+
+			<label asp-for="Login"></label>
+			<p>
+				<input type="text" asp-for="Login" maxlength="20" placeholder="Логин" value="@Model.Login" />
+				<span asp-validation-for="Login" class="position-box-error" id="login-error"></span>
+			</p>
+
+			<label asp-for="Password"></label>
+			<p>
+				<input type="password" asp-for="Password" maxlength="20" placeholder="Пароль" value="@Model.Password" />
+				<span asp-validation-for="Password" class="position-box-error"></span>
+			</p>
+
+			@Html.Label("RoleID", "Выберите роль:")
+			<p>@Html.DropDownList("RoleID", ViewBag.Roles as SelectList)</p>
+			<p><button type="submit">Сохранить</button></p>
+		</form>
+		<form asp-action="Main" asp-controller="Teachers">
+			<button class="button-revers">Главная</button>
+		</form>
+		<p>@ViewData["Message"]</p>
+	</div>
+</div>
+
+
+@section Scripts {
+    <script>
+		$(document).ready(function () {
+			$('#editTeacherForm').submit(function (e) {
+				e.preventDefault();
+
+				if ($(this).valid()) {
+					var teacherID = $('#TeacherID').val();
+					var name = $('#FirstName').val();
+					var surname = $('#LastName').val();
+					var surname = $('#MiddleName').val();
+					var surname = $('#Position').val();
+					var email = $('#Email').val();
+					var login = $('#Login').val();
+					var password = $('#Password').val();
+					var roleID = $('#RoleID').val();
+
+					var teacher = {
+						TeacherID: teacherID,
+						Name: name,
+						Surname: surname,
+						MiddleName: middlename,
+						Position: position,
+						Email: email,
+						Login: login,
+						Password: password,
+						roleID: roleID
+					};
+
+					$.ajax({
+						url: '/Teachers/EditTeacher/' + teacherID,
+						type: 'PUT',
+						data: JSON.stringify(teacher),
+						contentType: 'application/json',
+						success: function (response) {
+							if (response.loginError) {
+								$('#login-error').text(response.loginError);
+								$('#Login')[0].setCustomValidity(response.loginError);
+								$('#Login').removeClass('valid');
+								$('#Login').addClass('input-validation-error');
+							} else if (response.emailError) {
+								$('#email-error').text(response.emailError);
+								$('#Email')[0].setCustomValidity(response.emailError);
+								$('#Email').removeClass('valid');
+								$('#Email').addClass('input-validation-error');
+							} else if (response.success) {
+								console.log('Пользователь успешно обновлен');
+								window.location.href = '/Teachers/All';
+							} else {
+								console.log('Ошибка при обновлении пользователя');
+							}
+						},
+						error: function (xhr, status, error) {
+							console.log('Ошибка при выполнении запроса');
+						}
+					});
+				}
+			});
+		});
+    </script>
+}

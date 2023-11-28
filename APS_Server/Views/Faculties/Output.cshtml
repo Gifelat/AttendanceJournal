@@ -1,0 +1,100 @@
+﻿@{
+	ViewData["Title"] = "Faculties";
+}
+
+@model IEnumerable<AttendanceJournalLibrary.Faculty>
+<div class="background-box">
+	<div class="text-center">
+		<div id="title-inline"></div>
+		<h2>Факультет, кафедра и группа</h2>
+		<div id="title-inline"></div>
+		@if (Model.Count() > 0)
+		{
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayName("№")
+						</th>
+						<th>
+							@Html.DisplayName("Факультет")
+						</th>
+						<th>
+							@Html.DisplayName("Кафедра")
+						</th>
+						<th>
+							@Html.DisplayName("Группа")
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.FacultyID)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.FacultyName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.DepartmentName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.GroupName)
+							</td>
+							<td>
+								@using (Html.BeginForm("Edit", "Faculties", FormMethod.Get))
+								{
+									<form>
+										<p><button class="button-input-small" value="@item.FacultyID" name="id">Изменить</button></p>
+									</form>
+								}
+							</td>
+							<td>
+								<form>
+									<p><button type="button" class="button-input-small" value="@item.FacultyID" name="id" onclick="deleteStudent('@item.FacultyID')">Удалить</button></p>
+								</form>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p>Записи не найдены...</p>
+		}
+	
+		<form asp-action="Main" asp-controller="Faculties">
+			<p><button class="button-revers">Ок</button></p>
+		</form>
+	</div>
+</div>
+
+<script>
+	function deleteStudent(facultyId) {
+		fetch(`/Faculties/DeleteStudent/${facultyId}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+			.then(response => {
+				if (response.ok) {
+					window.location.href = '/Faculties/All';
+				} else {
+					console.error("Ошибка при удалении");
+				}
+			})
+			.catch(error => {
+				console.error("Произошла ошибка:", error);
+			});
+
+		if (window.performance) {
+			if (performance.navigation.type === 1) {
+				window.location.href = "/Home/ErrorPage";
+			}
+		}
+	}
+</script>
